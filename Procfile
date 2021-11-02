@@ -1,1 +1,1 @@
-web: java -jar target/my-storage-1.0.jar
+web: java -jar target/MyStorage-1.0.jar
