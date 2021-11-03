@@ -11,12 +11,13 @@ background: url(/pic/1.png);
     min-width: 400px;
 }
 
+
 .list-group{
     border: 1px solid black;
 }
 
 .my_field{
-    min-width: 400px;
+    min-width: 800px;
 }
 
 
@@ -39,11 +40,11 @@ background: url(/pic/1.png);
 
 .modal_content{
     background-color: #fff;
-    width: 80%;
-    padding: 2rem;
+    width: 800px;
+    padding: 10px;
     border: 1px solid #ccc;
     margin: 15% auto 0;
-    box-shadow: 0 4px 8px 0 rgba(0,0, 0, 0.2), 0 6;
+    box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, .2);
 }
 
 .modal_close{

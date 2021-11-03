@@ -48,20 +48,12 @@ public class AppController {
     }
 */
     @PostMapping("/storage")
-    public String saveStorage(@ModelAttribute Storage storage,Model model){
+    public String saveStorage(@ModelAttribute Storage storage,Model model,@RequestParam("file") MultipartFile file){
 
-
-
-        //Storage storage = new Storage();
-        //curStorage.setFileName();
-        //curStorage.setFileName(file.getName());
-        //curStorage.setFileData(utils.uploadFile(file));
-
+        storage.setFileData(utils.uploadFile(file));
         model.addAttribute("obj",storage);
-       // System.out.println("To string model: " + model.toString());
-        //System.out.println("!!!!!!!!!!!!__!!!!!" + model.getAttribute("cur_storage"));
-        //storageDAO.saveStorage(curStorage);
-        System.out.println("!!!!!___!!!! " + storage);
+        storageDAO.saveStorage(storage);
+
         return "redirect:/";
     }
 
