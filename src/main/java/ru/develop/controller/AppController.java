@@ -3,9 +3,8 @@ package ru.develop.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.develop.dao.StorageDAO;
 import ru.develop.entity.Storage;
@@ -22,38 +21,57 @@ public class AppController {
     @Autowired
     public File_utils utils;
 
-    @GetMapping("/")
+/*    @GetMapping("/")
     public String mainPage(){
         return "index";
-    }
+    }*/
 
-    @GetMapping("/storages")
+    @GetMapping("/")
     public String getAllstorages(Model model){
 
         List<Storage> getAllStorage = storageDAO.getAllStorage();
         model.addAttribute("allSt",getAllStorage);
 
+        Storage storage = new Storage();
+        model.addAttribute("obj",storage);
+
         return "index";
     }
 
-    @PostMapping("/storages")
-    public String saveStorage(@RequestParam("file") MultipartFile file){
+  /*  @GetMapping("/create")
+    public String createStorage(Model model){
+        Storage storage = new Storage();
+        model.addAttribute("obj",storage);
 
-        Storage curStorage = new Storage();
-        curStorage.setFileName(file.getName());
-        curStorage.setFileData(utils.uploadFile(file));
+        System.out.println("Call create STORAGE");
+        return "redirect:/";
+    }
+*/
+    @PostMapping("/storage")
+    public String saveStorage(@ModelAttribute Storage storage,Model model){
 
-        storageDAO.saveStorage(curStorage);
 
-        return "index";
+
+        //Storage storage = new Storage();
+        //curStorage.setFileName();
+        //curStorage.setFileName(file.getName());
+        //curStorage.setFileData(utils.uploadFile(file));
+
+        model.addAttribute("obj",storage);
+       // System.out.println("To string model: " + model.toString());
+        //System.out.println("!!!!!!!!!!!!__!!!!!" + model.getAttribute("cur_storage"));
+        //storageDAO.saveStorage(curStorage);
+        System.out.println("!!!!!___!!!! " + storage);
+        return "redirect:/";
     }
 
     @GetMapping("/storage")
-    public String getStorages(Model model){
+    public String getStorages(@RequestParam("id") int id,@RequestParam("name") String name,
+                              @RequestParam("extension")String ext){
 
-        Storage storage = storageDAO.getStorage(4);
-        utils.downloadFile(storage.getFileData());
-        return "index";
+        Storage storage = storageDAO.getStorage(id);
+        utils.downloadFile(name,ext,storage.getFileData());
+        return "redirect:/";
     }
 
 }

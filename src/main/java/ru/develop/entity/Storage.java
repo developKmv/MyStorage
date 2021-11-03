@@ -3,6 +3,7 @@ package ru.develop.entity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -63,5 +64,15 @@ public class Storage {
         this.fileName = fileName;
         this.fileData = fileData;
         this.fileExtensions = fileExtensions;
+    }
+
+    @Override
+    public String toString() {
+        return "Storage{" +
+                "id=" + id +
+                ", fileName='" + fileName + '\'' +
+                ", fileData=" + Arrays.toString(fileData) +
+                ", fileExtensions='" + fileExtensions + '\'' +
+                '}';
     }
 }

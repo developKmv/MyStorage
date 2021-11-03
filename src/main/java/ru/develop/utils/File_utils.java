@@ -12,8 +12,8 @@ import java.util.List;
 public class File_utils {
 
     public byte[] uploadFile(MultipartFile file){
-
-        byte[] rs;
+        byte[] rs = null;
+       /* byte[] rs;
         List<Byte> listByte = new ArrayList<>();
         FileInputStream fis = null;
 
@@ -42,13 +42,17 @@ public class File_utils {
             rs[i] = listByte.get(i);
         }
 
+        return rs;*/
+        try {
+            rs = file.getBytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return rs;
-
-
     }
 
-    public void downloadFile(byte[] out){
-        File outputFile = new File("output_f");
+    public void downloadFile(String name,String extension,byte[] out){
+        File outputFile = new File(new String(name + "." + extension));
 
         try(RandomAccessFile writer = new RandomAccessFile(outputFile, "rw"))
         {
