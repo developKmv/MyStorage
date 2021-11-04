@@ -59,7 +59,7 @@
     <div class="list-group">
       <a th:href="@{/storage(id=${st.id},name=${st.fileName},extension=${st.fileExtensions})}"
          class="list-group-item list-group-item-action my_field" aria-current="true" th:each="st: ${allSt}">
-        <span th:text="${st.id + ' ' + st.fileName + ' ' + st.fileExtensions}"></span>
+        <span th:text="${st.id + ' ' + st.fileName}"></span>
       </a>
     </div>
 

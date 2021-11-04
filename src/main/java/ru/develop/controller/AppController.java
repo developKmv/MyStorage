@@ -1,6 +1,11 @@
 package ru.develop.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,11 +15,20 @@ import ru.develop.dao.StorageDAO;
 import ru.develop.entity.Storage;
 import ru.develop.utils.File_utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 
 public class AppController {
+
+    private static final Logger log = Logger.getLogger(AppController.class.getName());
 
     @Autowired
     private StorageDAO storageDAO;
@@ -50,20 +64,58 @@ public class AppController {
     @PostMapping("/storage")
     public String saveStorage(@ModelAttribute Storage storage,Model model,@RequestParam("file") MultipartFile file){
 
+        String fileName = file.getOriginalFilename();
+        storage.setFileName(fileName);
+        log.log(Level.INFO,"File name "+ file.getOriginalFilename());
+        String ext = fileName.substring(fileName.indexOf("."));
+        storage.setFileExtensions(ext);
+
+        log.log(Level.INFO,storage.toString());
         storage.setFileData(utils.uploadFile(file));
+
         model.addAttribute("obj",storage);
         storageDAO.saveStorage(storage);
 
         return "redirect:/";
     }
 
-    @GetMapping("/storage")
+    /*@GetMapping("/storage")
     public String getStorages(@RequestParam("id") int id,@RequestParam("name") String name,
                               @RequestParam("extension")String ext){
 
         Storage storage = storageDAO.getStorage(id);
         utils.downloadFile(name,ext,storage.getFileData());
         return "redirect:/";
-    }
+    }*/
 
+    @GetMapping("/storage")
+    public  ResponseEntity<Resource> download(@RequestParam("id") int id,@RequestParam("name") String name,
+                                             @RequestParam("extension")String ext){
+        String strPath = String.format("%s.%s",name,ext);
+        log.log(Level.INFO,strPath);
+
+        Storage storage = storageDAO.getStorage(id);
+        File file = new File(strPath);
+
+        try {
+            Files.write(file.toPath(),storage.getFileData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        log.log(Level.INFO, String.valueOf(file.length()));
+
+        ByteArrayResource resource = new ByteArrayResource(storage.getFileData());
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + strPath);
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(file.length())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
+    }
 }

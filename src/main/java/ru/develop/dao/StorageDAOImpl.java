@@ -40,4 +40,12 @@ public class StorageDAOImpl implements StorageDAO{
 
         return storage;
     }
+
+    @Override
+    @Transactional
+    public void deleteStorage(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Storage storage = session.get(Storage.class,id);
+        session.delete(storage);
+    }
 }

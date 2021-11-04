@@ -8,4 +8,5 @@ public interface StorageDAO {
     public void saveStorage(Storage st);
     public List<Storage> getAllStorage();
     public Storage getStorage(int id);
+    public void deleteStorage(int id);
 }
