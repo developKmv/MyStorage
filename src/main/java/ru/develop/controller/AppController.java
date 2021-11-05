@@ -118,4 +118,11 @@ public class AppController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
     }
+
+    @DeleteMapping("/storage")
+    @ResponseBody
+    public String deleteStorage(@RequestParam("id") int id){
+        storageDAO.deleteStorage(id);
+      return "redirect:/";
+    };
 }

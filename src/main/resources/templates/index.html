@@ -2,104 +2,132 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-  <link th:href="@{/stylesheets/style.css}" rel="stylesheet" />
-  <title>MyStorage</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/stylesheets/style.css}" rel="stylesheet"/>
+    <title>MyStorage</title>
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">My storage</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a id="open-modal" class="nav-link" href="#">Upload</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Dropdown
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+        <a class="navbar-brand" href="#">My storage</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a id="open-modal" class="nav-link" href="#">Upload</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
-          </li>
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      </div>
-    </div>
-  </nav>
-
-  <div class="first">
-    <h3>Click to download</h3>
-
-    <div class="list-group">
-      <a th:href="@{/storage(id=${st.id},name=${st.fileName},extension=${st.fileExtensions})}"
-         class="list-group-item list-group-item-action my_field" aria-current="true" th:each="st: ${allSt}">
-        <span th:text="${st.id + ' ' + st.fileName}"></span>
-      </a>
-    </div>
-
-    <div id="modal1" class="my_modal">
-      <div class="modal_content">
-        <span class="modal_close">&times;</span>
-          <div class="form_style">
-         <!--   <form th:action="@{/storage}" method="post" th:object="${obj}">
-              <input type="text" th:field="*{fileName}"><br>
-              <input type="text" th:field="*{fileExtensions}"><br>
-              <input type="submit" value="Submit">
-            </form>-->
-            <form th:action="@{/storage}" method="post" enctype="multipart/form-data" th:object="${obj}">
-              <div class="mb-3">
-                <label for="file_name" class="form-label">File name</label>
-                <input type="text" class="form-control" id="file_name" th:field="*{fileName}">
-              </div>
-              <div class="mb-3">
-                <label for="file_extension" class="form-label">File extension</label>
-                <input type="text" class="form-control" id="file_extension" th:field="*{fileExtensions}">
-              </div>
-<!--              <input type="file" name="file" />-->
-<!--              <button type="submit" class="btn btn-primary">Save</button>-->
-              <div class="input-group">
-                <input type="file" name="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Save</button>
-              </div>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
-          </div>
-      </div>
+        </div>
     </div>
+</nav>
+<hr>
+<div class="first container-fluid">
+    <div class="row">
+        <h3>Click to download</h3>
 
-    <!--<button id="open-modal">Open modal</button>-->
+        <!--  <div class="list-group">
+            <a th:href="@{/storage(id=${st.id},name=${st.fileName},extension=${st.fileExtensions})}"
+            class="list-group-item list-group-item-action my_field" aria-current="true" th:each="st: ${allSt}">
+            <span th:text="${st.id + ' ' + st.fileName}"></span>
+            </a>
+        </div>-->
 
-  </div>
+       <!--  <div class="list-group col my_list">
+            <a href="#" class="list-group-item list-group-item-action my_field" aria-current="true" th:each="st: ${allSt}">
+                <span th:text="${st.id +' '+ '['+st.fileName + ']'}"></span>
+            </a>
+        </div>-->
+        <div class="col">
+            <table class="table table-striped table-light my_table ">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Extension</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="st: ${allSt}" class="my_field">
+                    <td th:text="${st.id}"></td>
+                    <td th:text="${st.fileName}"></td>
+                    <td th:text="${st.fileExtensions}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
- 
+        <div id="modal1" class="my_modal col">
+            <div class="modal_content">
+                <span id="modal_close" class="modal_close">&#10006;</span>
+                <div class="form_style">
 
-  <script src="/webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-  <script type="text/javascript" th:src="@{/js/main.js}"></script>
+                    <form th:action="@{/storage}" method="post" enctype="multipart/form-data" th:object="${obj}">
+                        <div class="mb-3">
+                            <label for="file_name" class="form-label">File name</label>
+                            <input type="text" class="form-control" id="file_name" th:field="*{fileName}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="file_extension" class="form-label">File extension</label>
+                            <input type="text" class="form-control" id="file_extension" th:field="*{fileExtensions}">
+                        </div>
+                        <div class="input-group">
+                            <input type="file" name="file" class="form-control" id="inputGroupFile04"
+                                aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                            <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal2" class="my_modal col">
+            <div class="modal_content">
+                <span id="modal2_close" class="modal_close">&#10006;</span>
+                <div class="control_buttons">
+                    <button type="button" class="btn btn-success" id="save_button">Save</button>
+                    <button type="button" class="btn btn-danger" id="delete_button">Delete</button>
+                </div>
+            </div>
+        </div>
+        <!--<button id="open-modal">Open modal</button>-->
+    </div>
+</div>
+
+<script src="/webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"></script>
 
 </body>
 
