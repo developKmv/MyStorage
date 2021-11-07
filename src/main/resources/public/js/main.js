@@ -92,7 +92,7 @@ function delete_storage(e){
             a.click();
             a.remove();*/
 
-            let response = fetch(url, {method: 'DELETE'})
+            let response = fetch(url, {method: 'DELETE',credentials: 'include'})
             .then(res => location.href='/').then(res=>console.log(res));
 
             

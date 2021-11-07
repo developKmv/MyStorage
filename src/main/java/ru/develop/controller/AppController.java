@@ -4,8 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,8 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.develop.dao.StorageDAO;
 import ru.develop.entity.Storage;
+import ru.develop.exception_handling.EntityExp;
 import ru.develop.utils.File_utils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,7 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
-
 public class AppController {
 
     private static final Logger log = Logger.getLogger(AppController.class.getName());
@@ -95,15 +101,16 @@ public class AppController {
         log.log(Level.INFO,strPath);
 
         Storage storage = storageDAO.getStorage(id);
-        File file = new File(strPath);
+        //File file = new File(strPath);
 
-        try {
+      /*  try {
             Files.write(file.toPath(),storage.getFileData());
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        log.log(Level.INFO, String.valueOf(file.length()));
+        //log.log(Level.INFO, String.valueOf(file.length()));
+        log.log(Level.INFO, String.valueOf(storage.getFileData()));
 
         ByteArrayResource resource = new ByteArrayResource(storage.getFileData());
         HttpHeaders header = new HttpHeaders();
@@ -114,7 +121,7 @@ public class AppController {
 
         return ResponseEntity.ok()
                 .headers(header)
-                .contentLength(file.length())
+                .contentLength(storage.getFileData().length)
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
     }
@@ -122,7 +129,17 @@ public class AppController {
     @DeleteMapping("/storage")
     @ResponseBody
     public String deleteStorage(@RequestParam("id") int id){
+        log.log(Level.INFO,"call delete!");
         storageDAO.deleteStorage(id);
       return "redirect:/";
     };
+
+    @ExceptionHandler
+    public ResponseEntity<EntityExp> handleException(Exception e){
+        EntityExp entityExp = new EntityExp();
+        entityExp.setMsg(e.getMessage());
+
+        return  new ResponseEntity<>(entityExp, HttpStatus.NOT_FOUND);
+    }
+
 }
