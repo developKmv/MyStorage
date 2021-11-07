@@ -6,17 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.cors.CorsConfiguration;
-import ru.develop.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,12 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setExposedHeaders(atr4);
 
-        // You can customize the following part based on your project, it's only a sample
         http.authorizeRequests().antMatchers("/**").hasRole("admin").and().formLogin().permitAll()
                 .and().csrf().disable().cors().configurationSource(request -> corsConfiguration);
-
-     /*   http.authorizeRequests().antMatchers("/**").permitAll().anyRequest()
-                .authenticated().and().csrf().disable().cors().configurationSource(request -> corsConfiguration);*/
 
     }
 
