@@ -27,10 +27,17 @@ public class MyConfig {
     @Value("spring.datasource.url")
     private String dbUrl;
 
-    @Autowired
-    private DataSource dataSource;
-
     @Bean
+    public DataSource dataSource() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.driverClassName("org.postgresql.Driver");
+        dataSourceBuilder.url(dbUrl);
+        dataSourceBuilder.username("postgres");
+        dataSourceBuilder.password("Dune1488");
+        return dataSourceBuilder.build();
+    }
+
+  /*  @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
@@ -38,8 +45,7 @@ public class MyConfig {
         dataSourceBuilder.username("postgres");
         dataSourceBuilder.password("Dune1488");
         return dataSourceBuilder.build();
-    }
-
+    }*/
 /*
     @Bean
     public DataSource dataSource() throws SQLException {
