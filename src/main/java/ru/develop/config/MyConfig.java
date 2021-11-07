@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 @EnableTransactionManagement
 public class MyConfig {
 
-    @Value("spring.datasource.url")
-    private String dbUrl;
+    @Value("${spring.datasource.url}")
+    private String dbUrl;/*= "jdbc:postgresql://localhost:5432/my_storage?useSSL=false&serverTimezone=UTC";*/
 
     @Bean
     public DataSource dataSource() {
