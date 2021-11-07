@@ -1,4 +1,4 @@
-package ru.develop.entity;
+package ru.develop;
 
 
 import org.springframework.boot.jdbc.DataSourceBuilder;
