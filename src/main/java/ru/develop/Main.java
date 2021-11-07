@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 @SpringBootApplication
 @EnableAutoConfiguration(exclude= HibernateJpaAutoConfiguration.class)
 public class Main {
-    private static final Logger log = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

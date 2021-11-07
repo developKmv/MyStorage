@@ -1,6 +1,7 @@
 package ru.develop.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,24 +16,36 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.cors.CorsConfiguration;
+import ru.develop.Main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Configuration
 @EnableWebSecurity
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final Logger log = Logger.getLogger(WebSecurityConfig.class.getName());
+
+    @Value("${storage.user}")
+    private String userName;
+    @Value("${storage.password}")
+    private String password;
+
+
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //super.configure(auth);
+        log.log(Level.INFO,userName);
+        log.log(Level.INFO,password);
 
         auth.inMemoryAuthentication().passwordEncoder(passwordEncoder()).
-                withUser("admin").password(passwordEncoder().encode("admin")).roles("admin");
+                withUser(userName).password(passwordEncoder().encode(password)).roles("admin");
     }
 
     @Bean

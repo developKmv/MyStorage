@@ -25,15 +25,18 @@ import java.util.logging.Logger;
 public class MyConfig {
 
     @Value("${spring.datasource.url}")
-    private String dbUrl;/*= "jdbc:postgresql://localhost:5432/my_storage?useSSL=false&serverTimezone=UTC";*/
-
+    private String dbUrl; /*= "jdbc:postgresql://localhost:5432/my_storage?useSSL=false&serverTimezone=UTC";*/
+    @Value("${db.user}")
+    private String dbUser;
+    @Value("${db.password}")
+    private String dbPassword;
     @Bean
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url(dbUrl);
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("Dune1488");
+        dataSourceBuilder.username(dbUser);
+        dataSourceBuilder.password(dbPassword);
         return dataSourceBuilder.build();
     }
 
