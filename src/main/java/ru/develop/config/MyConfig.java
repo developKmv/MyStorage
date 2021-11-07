@@ -1,6 +1,10 @@
 package ru.develop.config;
 
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,24 +14,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.sql.SQLException;
 import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 public class MyConfig {
-    /*@Bean
-    public DataSource dataSource(){
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        try {
-            dataSource.setDriverClass("org.postgresql.Driver");
-            dataSource.setJdbcUrl("jdbc:postgresql://localhost:5432/my_storage?useSSL=false&serverTimezone=UTC");
-            dataSource.setUser("postgres");
-            dataSource.setPassword("Dune1488");
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        return dataSource;
-    }*/
+    @Value("spring.datasource.url")
+    private String dbUrl;
+
+ /*   @Autowired
+    private DataSource dataSource;*/
 
     @Bean
     public DataSource dataSource() {
@@ -39,10 +36,24 @@ public class MyConfig {
         return dataSourceBuilder.build();
     }
 
+   /* @Bean
+    public DataSource dataSource() throws SQLException {
+        if (dbUrl == null || dbUrl.isEmpty()) {
+            return new HikariDataSource();
+        } else {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(dbUrl);
+            return new HikariDataSource(config);
+        }
+    }*/
+
     @Bean
     public LocalSessionFactoryBean sessionFactoryBean(){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+
+
         sessionFactory.setDataSource(dataSource());
+
         sessionFactory.setPackagesToScan("ru.develop.entity");
 
         Properties hibernateProps = new Properties();
