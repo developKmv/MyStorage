@@ -11,20 +11,24 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import ru.develop.controller.AppController;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Configuration
 @EnableTransactionManagement
 public class MyConfig {
+
     @Value("spring.datasource.url")
     private String dbUrl;
 
- /*   @Autowired
-    private DataSource dataSource;*/
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public DataSource dataSource() {
@@ -36,7 +40,8 @@ public class MyConfig {
         return dataSourceBuilder.build();
     }
 
-   /* @Bean
+/*
+    @Bean
     public DataSource dataSource() throws SQLException {
         if (dbUrl == null || dbUrl.isEmpty()) {
             return new HikariDataSource();
@@ -45,17 +50,15 @@ public class MyConfig {
             config.setJdbcUrl(dbUrl);
             return new HikariDataSource(config);
         }
-    }*/
+    }
+*/
 
     @Bean
     public LocalSessionFactoryBean sessionFactoryBean(){
+
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-
-
         sessionFactory.setDataSource(dataSource());
-
         sessionFactory.setPackagesToScan("ru.develop.entity");
-
         Properties hibernateProps = new Properties();
         hibernateProps.setProperty("hibernate.dialects","org.hibernate.dialect.PostgreSQLDialect");
         hibernateProps.setProperty("hibernate.show_sql","true");
