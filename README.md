@@ -15,4 +15,4 @@ Technologies used:
 * Spring boot security
 * Hibernate
 * Web jars
-
+* Postgres data base
